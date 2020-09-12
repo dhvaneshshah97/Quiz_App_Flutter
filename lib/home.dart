@@ -1,3 +1,4 @@
+import 'package:CoolQuiz/quiz.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             children: [
               TextField(
+                controller: firstnameController,
                 decoration: InputDecoration(
                     labelText: 'First Name',
                     labelStyle: TextStyle(
@@ -37,6 +39,7 @@ class _HomePageState extends State<HomePage> {
                 height: 5.0,
               ),
               TextField(
+                controller: lastnameController,
                 decoration: InputDecoration(
                     labelText: 'Last Name',
                     labelStyle: TextStyle(
@@ -50,6 +53,7 @@ class _HomePageState extends State<HomePage> {
                 height: 5.0,
               ),
               TextField(
+                controller: nicknameController,
                 decoration: InputDecoration(
                     labelText: 'Nick Name',
                     labelStyle: TextStyle(
@@ -66,6 +70,7 @@ class _HomePageState extends State<HomePage> {
                 height: 5.0,
               ),
               TextField(
+                controller: ageController,
                 decoration: InputDecoration(
                     labelText: 'Age',
                     labelStyle: TextStyle(
@@ -95,7 +100,11 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.all(10.0),
                   ),
                   RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => Quiz(),
+                      ));
+                    },
                     textColor: Colors.white,
                     color: Colors.blue,
                     child: Text(
