@@ -36,11 +36,20 @@ class _QuizState extends State<Quiz> {
     },
   ];
 
+  bool pressed = false;
+
   var _questionIndex = 0;
+
+  void _showNext() {
+    setState(() {
+      pressed = true;
+    });
+  }
 
   void _answerQuestion() {
     setState(() {
       _questionIndex = _questionIndex + 1;
+      pressed = false;
     });
     print(_questionIndex);
   }
@@ -49,19 +58,37 @@ class _QuizState extends State<Quiz> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Question 1"),
+        title: Text('Question ${_questionIndex + 1}'),
       ),
-      body: Column(
-        children: [
-          Question(
-            questions[_questionIndex]['questionText'],
-          ),
-          ...(questions[_questionIndex]['answers'] as List<String>)
-              .map((answer) {
-            return Answer(_answerQuestion, answer);
-          }).toList()
-        ],
-      ),
+      body: _questionIndex < questions.length
+          ? Column(
+              children: [
+                Question(
+                  questions[_questionIndex]['questionText'],
+                ),
+                ...(questions[_questionIndex]['answers'] as List<String>)
+                    .map((answer) {
+                  return Answer(_showNext, answer);
+                }).toList(),
+                pressed
+                    ? RaisedButton(
+                        onPressed: _answerQuestion,
+                        textColor: Colors.white,
+                        color: Colors.blue,
+                        child: Text(
+                          _questionIndex == questions.length - 1
+                              ? "End"
+                              : "Next",
+                          style: TextStyle(fontSize: 20.0, color: Colors.white),
+                        ),
+                        padding: EdgeInsets.all(10.0),
+                      )
+                    : SizedBox(),
+              ],
+            )
+          : Center(
+              child: Text('You did it'),
+            ),
     );
   }
 }
