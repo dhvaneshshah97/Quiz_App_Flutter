@@ -6,12 +6,109 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final firstnameController = TextEditingController();
+  final lastnameController = TextEditingController();
+  final nicknameController = TextEditingController();
+  final ageController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Welcome to CoolQuiz"),
+        title: Text("My Profile"),
         centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+          child: Column(
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                    labelText: 'First Name',
+                    labelStyle: TextStyle(
+                      letterSpacing: 2.0,
+                      color: Colors.orange,
+                    )),
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.text,
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                    labelText: 'Last Name',
+                    labelStyle: TextStyle(
+                      letterSpacing: 2.0,
+                      color: Colors.orange,
+                    )),
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.text,
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                    labelText: 'Nick Name',
+                    labelStyle: TextStyle(
+                      letterSpacing: 2.0,
+                      color: Colors.orange,
+                    )),
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.text,
+                style: TextStyle(
+                  letterSpacing: 2.0,
+                ),
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                    labelText: 'Age',
+                    labelStyle: TextStyle(
+                      letterSpacing: 2.0,
+                      color: Colors.orange,
+                    )),
+                textInputAction: TextInputAction.done,
+                keyboardType: TextInputType.number,
+                style: TextStyle(
+                  letterSpacing: 2.0,
+                ),
+              ),
+              SizedBox(
+                height: 35.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  RaisedButton(
+                    onPressed: () {},
+                    textColor: Colors.white,
+                    color: Colors.blue,
+                    child: Text(
+                      "Submit",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                    padding: EdgeInsets.all(10.0),
+                  ),
+                  RaisedButton(
+                    onPressed: () {},
+                    textColor: Colors.white,
+                    color: Colors.blue,
+                    child: Text(
+                      "Take Quiz",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                    padding: EdgeInsets.all(10.0),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
