@@ -12,6 +12,23 @@ class _HomePageState extends State<HomePage> {
   final nicknameController = TextEditingController();
   final ageController = TextEditingController();
 
+  int score = 0;
+
+  _navigateAndDisplayScore(BuildContext context) async {
+    int returnedScore = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Quiz(),
+        ));
+    setState(() {
+      if (returnedScore != null) {
+        score = returnedScore;
+      } else {
+        score = 0;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,11 +117,7 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.all(10.0),
                   ),
                   RaisedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => Quiz(),
-                      ));
-                    },
+                    onPressed: () => _navigateAndDisplayScore(context),
                     textColor: Colors.white,
                     color: Colors.blue,
                     child: Text(
@@ -114,7 +127,17 @@ class _HomePageState extends State<HomePage> {
                     padding: EdgeInsets.all(10.0),
                   ),
                 ],
-              )
+              ),
+              SizedBox(
+                height: 80.0,
+              ),
+              Text(
+                'Your score is: $score',
+                style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2.0),
+              ),
             ],
           ),
         ),
