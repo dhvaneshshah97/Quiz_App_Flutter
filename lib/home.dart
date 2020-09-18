@@ -1,5 +1,6 @@
 import 'package:CoolQuiz/quiz.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -7,6 +8,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    getFname();
+    getLname();
+    getNname();
+    getAge();
+  }
+
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
   final nicknameController = TextEditingController();
@@ -14,6 +24,46 @@ class _HomePageState extends State<HomePage> {
   int score = 0;
 
   final _formKey = GlobalKey<FormState>();
+
+  getFname() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String fname = prefs.getString('fname') ?? '';
+    setState(() {
+      firstnameController.text = fname;
+    });
+  }
+
+  getLname() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String lname = prefs.getString('lname') ?? '';
+    setState(() {
+      lastnameController.text = lname;
+    });
+  }
+
+  getNname() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String nname = prefs.getString('nname') ?? '';
+    setState(() {
+      nicknameController.text = nname;
+    });
+  }
+
+  getAge() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String age = prefs.getString('age') ?? '';
+    setState(() {
+      ageController.text = age;
+    });
+  }
+
+  addUserDetailstoSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('fname', firstnameController.text);
+    prefs.setString('lname', lastnameController.text);
+    prefs.setString('nname', nicknameController.text);
+    prefs.setString('age', ageController.text);
+  }
 
   _navigateAndDisplayScore(BuildContext context) async {
     int returnedScore = await Navigator.push(
@@ -116,37 +166,39 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 35.0,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        RaisedButton(
+                          onPressed: () {
+                            if (_formKey.currentState.validate()) {
+                              addUserDetailstoSF();
+                            }
+                          },
+                          textColor: Colors.white,
+                          color: Colors.blue,
+                          child: Text(
+                            "Submit",
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.white),
+                          ),
+                          padding: EdgeInsets.all(10.0),
+                        ),
+                        RaisedButton(
+                          onPressed: () => _navigateAndDisplayScore(context),
+                          textColor: Colors.white,
+                          color: Colors.blue,
+                          child: Text(
+                            "Take Quiz",
+                            style:
+                                TextStyle(fontSize: 20.0, color: Colors.white),
+                          ),
+                          padding: EdgeInsets.all(10.0),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  RaisedButton(
-                    onPressed: () {
-                      if (_formKey.currentState.validate()) {
-                        print("valid form");
-                      }
-                    },
-                    textColor: Colors.white,
-                    color: Colors.blue,
-                    child: Text(
-                      "Submit",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                    ),
-                    padding: EdgeInsets.all(10.0),
-                  ),
-                  RaisedButton(
-                    onPressed: () => _navigateAndDisplayScore(context),
-                    textColor: Colors.white,
-                    color: Colors.blue,
-                    child: Text(
-                      "Take Quiz",
-                      style: TextStyle(fontSize: 20.0, color: Colors.white),
-                    ),
-                    padding: EdgeInsets.all(10.0),
-                  ),
-                ],
               ),
               SizedBox(
                 height: 80.0,
