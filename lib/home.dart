@@ -11,8 +11,9 @@ class _HomePageState extends State<HomePage> {
   final lastnameController = TextEditingController();
   final nicknameController = TextEditingController();
   final ageController = TextEditingController();
-
   int score = 0;
+
+  final _formKey = GlobalKey<FormState>();
 
   _navigateAndDisplayScore(BuildContext context) async {
     int returnedScore = await Navigator.push(
@@ -41,73 +42,92 @@ class _HomePageState extends State<HomePage> {
           padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
           child: Column(
             children: [
-              TextField(
-                controller: firstnameController,
-                decoration: InputDecoration(
-                    labelText: 'First Name',
-                    labelStyle: TextStyle(
-                      letterSpacing: 2.0,
-                      color: Colors.orange,
-                    )),
-                textInputAction: TextInputAction.done,
-                keyboardType: TextInputType.text,
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              TextField(
-                controller: lastnameController,
-                decoration: InputDecoration(
-                    labelText: 'Last Name',
-                    labelStyle: TextStyle(
-                      letterSpacing: 2.0,
-                      color: Colors.orange,
-                    )),
-                textInputAction: TextInputAction.done,
-                keyboardType: TextInputType.text,
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              TextField(
-                controller: nicknameController,
-                decoration: InputDecoration(
-                    labelText: 'Nick Name',
-                    labelStyle: TextStyle(
-                      letterSpacing: 2.0,
-                      color: Colors.orange,
-                    )),
-                textInputAction: TextInputAction.done,
-                keyboardType: TextInputType.text,
-                style: TextStyle(
-                  letterSpacing: 2.0,
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      validator: (value) =>
+                          value.isEmpty ? 'Value can\'t be empty' : null,
+                      controller: firstnameController,
+                      decoration: InputDecoration(
+                          labelText: 'First Name',
+                          labelStyle: TextStyle(
+                            letterSpacing: 2.0,
+                            color: Colors.orange,
+                          )),
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.text,
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    TextFormField(
+                      validator: (value) =>
+                          value.isEmpty ? 'Value can\'t be empty' : null,
+                      controller: lastnameController,
+                      decoration: InputDecoration(
+                          labelText: 'Last Name',
+                          labelStyle: TextStyle(
+                            letterSpacing: 2.0,
+                            color: Colors.orange,
+                          )),
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.text,
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    TextFormField(
+                      validator: (value) =>
+                          value.isEmpty ? 'Value can\'t be empty' : null,
+                      controller: nicknameController,
+                      decoration: InputDecoration(
+                          labelText: 'Nick Name',
+                          labelStyle: TextStyle(
+                            letterSpacing: 2.0,
+                            color: Colors.orange,
+                          )),
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.text,
+                      style: TextStyle(
+                        letterSpacing: 2.0,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    TextFormField(
+                      validator: (value) =>
+                          value.isEmpty ? 'Value can\'t be empty' : null,
+                      controller: ageController,
+                      decoration: InputDecoration(
+                          labelText: 'Age',
+                          labelStyle: TextStyle(
+                            letterSpacing: 2.0,
+                            color: Colors.orange,
+                          )),
+                      textInputAction: TextInputAction.done,
+                      keyboardType: TextInputType.number,
+                      style: TextStyle(
+                        letterSpacing: 2.0,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 35.0,
+                    ),
+                  ],
                 ),
-              ),
-              SizedBox(
-                height: 5.0,
-              ),
-              TextField(
-                controller: ageController,
-                decoration: InputDecoration(
-                    labelText: 'Age',
-                    labelStyle: TextStyle(
-                      letterSpacing: 2.0,
-                      color: Colors.orange,
-                    )),
-                textInputAction: TextInputAction.done,
-                keyboardType: TextInputType.number,
-                style: TextStyle(
-                  letterSpacing: 2.0,
-                ),
-              ),
-              SizedBox(
-                height: 35.0,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        print("valid form");
+                      }
+                    },
                     textColor: Colors.white,
                     color: Colors.blue,
                     child: Text(
