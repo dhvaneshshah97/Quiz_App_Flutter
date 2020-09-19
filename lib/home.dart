@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
     getLname();
     getNname();
     getAge();
+    availability();
     score.readScore().then((int value) {
       setState(() {
         _score = value;
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  bool _fname;
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
   final nicknameController = TextEditingController();
@@ -31,6 +33,14 @@ class _HomePageState extends State<HomePage> {
   int _score = 0;
 
   final _formKey = GlobalKey<FormState>();
+
+  availability() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool fNameInSF = prefs.containsKey('fname');
+    setState(() {
+      _fname = fNameInSF;
+    });
+  }
 
   getFname() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -212,13 +222,15 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 80.0,
               ),
-              Text(
-                'Your score is: $_score',
-                style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2.0),
-              ),
+              _fname
+                  ? Text(
+                      'Your score is: $_score',
+                      style: TextStyle(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2.0),
+                    )
+                  : SizedBox(),
             ],
           ),
         ),
