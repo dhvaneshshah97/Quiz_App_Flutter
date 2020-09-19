@@ -1,6 +1,7 @@
 import 'package:CoolQuiz/quiz.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:CoolQuiz/scoreStorage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -8,6 +9,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  ScoreStorage score = ScoreStorage();
   @override
   void initState() {
     super.initState();
@@ -15,13 +17,18 @@ class _HomePageState extends State<HomePage> {
     getLname();
     getNname();
     getAge();
+    score.readScore().then((int value) {
+      setState(() {
+        _score = value;
+      });
+    });
   }
 
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
   final nicknameController = TextEditingController();
   final ageController = TextEditingController();
-  int score = 0;
+  int _score = 0;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -73,9 +80,11 @@ class _HomePageState extends State<HomePage> {
         ));
     setState(() {
       if (returnedScore != null) {
-        score = returnedScore;
+        _score = returnedScore;
+        score.writeScore(_score);
       } else {
-        score = 0;
+        _score = 0;
+        score.writeScore(_score);
       }
     });
   }
@@ -204,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                 height: 80.0,
               ),
               Text(
-                'Your score is: $score',
+                'Your score is: $_score',
                 style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
