@@ -40,6 +40,7 @@ class _QuizState extends State<Quiz> {
 
   void _answerQuestion() {
     if (_questionIndex >= _questions.length - 1) {
+      print('hello');
       Navigator.pop(context, _totalScore > 0 ? _totalScore : 0);
       return;
     }
@@ -50,52 +51,69 @@ class _QuizState extends State<Quiz> {
     print(_questionIndex);
   }
 
+  // Future<bool> _onBackPressed() {
+  //   if (this._questionIndex == 0) {
+  //     Navigator.pop(context, _totalScore > 0 ? _totalScore : 0);
+  //   }
+  //   this._questionIndex = this._questionIndex - 1;
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Question ${_questionIndex + 1}'),
-        ),
-        body: Column(
-          children: [
-            FutureBuilder<List>(
-                future: _parseJson(),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        Question(
-                          _questions[_questionIndex]['questionText'],
-                        ),
-                        ...(_questions[_questionIndex]['answers'])
-                            .map((answer) {
-                          return Answer(
-                              () => _showNext(answer['score']), answer['text']);
-                        }).toList(),
-                        pressed
-                            ? RaisedButton(
-                                onPressed: _answerQuestion,
-                                textColor: Colors.white,
-                                color: Colors.blue,
-                                child: Text(
-                                  _questionIndex == _questions.length - 1
-                                      ? "End"
-                                      : "Next",
-                                  style: TextStyle(
-                                      fontSize: 20.0, color: Colors.white),
-                                ),
-                                padding: EdgeInsets.all(10.0),
-                              )
-                            : SizedBox(),
-                      ],
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                }),
-          ],
-        ));
+    return WillPopScope(
+      onWillPop: () async {
+        if (this._questionIndex == 0) {
+          return true;
+        } else {
+          _questionIndex = _questionIndex - 1;
+          return false;
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            title: Text('Question ${_questionIndex + 1}'),
+          ),
+          body: Column(
+            children: [
+              FutureBuilder<List>(
+                  future: _parseJson(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                        children: [
+                          Question(
+                            _questions[_questionIndex]['questionText'],
+                          ),
+                          ...(_questions[_questionIndex]['answers'])
+                              .map((answer) {
+                            return Answer(() => _showNext(answer['score']),
+                                answer['text']);
+                          }).toList(),
+                          pressed
+                              ? RaisedButton(
+                                  onPressed: _answerQuestion,
+                                  textColor: Colors.white,
+                                  color: Colors.blue,
+                                  child: Text(
+                                    _questionIndex == _questions.length - 1
+                                        ? "End"
+                                        : "Next",
+                                    style: TextStyle(
+                                        fontSize: 20.0, color: Colors.white),
+                                  ),
+                                  padding: EdgeInsets.all(10.0),
+                                )
+                              : SizedBox(),
+                        ],
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  }),
+            ],
+          )),
+    );
   }
 }
