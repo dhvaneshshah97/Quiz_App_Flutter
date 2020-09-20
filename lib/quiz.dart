@@ -39,11 +39,11 @@ class _QuizState extends State<Quiz> {
   }
 
   void _answerQuestion() {
-    _questionIndex = _questionIndex + 1;
-    if (_questionIndex > _questions.length - 1) {
+    if (_questionIndex >= _questions.length - 1) {
       Navigator.pop(context, _totalScore > 0 ? _totalScore : 0);
       return;
     }
+    _questionIndex = _questionIndex + 1;
     setState(() {
       pressed = false;
     });

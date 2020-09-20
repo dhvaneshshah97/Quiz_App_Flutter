@@ -17,6 +17,11 @@ class _HomePageState extends State<HomePage> {
     getLname();
     getNname();
     getAge();
+    score.availability().then((bool val) {
+      setState(() {
+        _scoreInFile = val;
+      });
+    });
     score.readScore().then((int value) {
       setState(() {
         _score = value;
@@ -29,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   final nicknameController = TextEditingController();
   final ageController = TextEditingController();
   int _score = 0;
+  bool _scoreInFile = false;
   bool _submit = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -84,9 +90,11 @@ class _HomePageState extends State<HomePage> {
       if (returnedScore != null) {
         _score = returnedScore;
         score.writeScore(_score);
+        this._scoreInFile = true;
       } else {
         _score = 0;
         score.writeScore(_score);
+        this._scoreInFile = true;
       }
     });
   }
@@ -218,13 +226,15 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 80.0,
               ),
-              Text(
-                'Your score is: $_score',
-                style: TextStyle(
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2.0),
-              ),
+              _scoreInFile
+                  ? Text(
+                      'Your score is: $_score',
+                      style: TextStyle(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2.0),
+                    )
+                  : SizedBox(),
             ],
           ),
         ),

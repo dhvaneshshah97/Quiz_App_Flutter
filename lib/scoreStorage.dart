@@ -1,5 +1,5 @@
 import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'dart:io' as io;
 
 class ScoreStorage {
   Future<String> localPath() async {
@@ -7,9 +7,9 @@ class ScoreStorage {
     return directory.path;
   }
 
-  Future<File> localFile() async {
+  Future<io.File> localFile() async {
     final path = await localPath();
-    return File('$path/score.txt');
+    return io.File('$path/score.txt');
   }
 
   Future<int> readScore() async {
@@ -22,8 +22,13 @@ class ScoreStorage {
     }
   }
 
-  Future<File> writeScore(int score) async {
+  Future<io.File> writeScore(int score) async {
     final file = await localFile();
     return file.writeAsString('$score');
+  }
+
+  Future<bool> availability() async {
+    final path = await localPath();
+    return io.File('$path/score.txt').exists();
   }
 }
