@@ -1,6 +1,10 @@
 import 'package:CoolQuiz/answer.dart';
 import 'package:CoolQuiz/question.dart';
 import 'package:flutter/material.dart';
+// import 'package:CoolQuiz/questions_model.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:async';
 
 class Quiz extends StatefulWidget {
   @override
@@ -8,53 +12,24 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  final _questions = const [
-    {
-      'questionText':
-          'Far-right protestors tried to storm the Parliament building in which country?',
-      'answers': [
-        {'text': 'Australia', 'score': 0},
-        {'text': 'Britain', 'score': 0},
-        {'text': 'France', 'score': 0},
-        {'text': 'Germany', 'score': 1}
-      ],
-    },
-    {
-      'questionText':
-          'Why did Shinzo Abe, prime minister of Japan, resign from office?',
-      'answers': [
-        {'text': 'An extramarital affair', 'score': 0},
-        {'text': 'Fraud', 'score': 0},
-        {'text': 'Illness', 'score': 1},
-        {'text': 'Protests', 'score': 0}
-      ],
-    },
-    {
-      'questionText':
-          'What did two commercial jet pilots reported seeing in the busy airspace near Los Angeles International Airport?',
-      'answers': [
-        {'text': 'An attack drone', 'score': 0},
-        {'text': 'A man with a jetpack', 'score': 1},
-        {'text': 'A girl attached to a kite', 'score': 0},
-        {'text': 'A U.F.O.', 'score': 0}
-      ],
-    },
-    {
-      'questionText':
-          'After more than seven decades of absence, jaguars are being reintroduced into the wetlands of which country?',
-      'answers': [
-        {'text': 'Argentina', 'score': 1},
-        {'text': 'Belize', 'score': 0},
-        {'text': 'Colombia', 'score': 0},
-        {'text': 'Mexico', 'score': 0}
-      ],
-    },
-  ];
-
+  var _questions = [];
   bool pressed = false;
-
   var _questionIndex = 0;
   var _totalScore = 0;
+
+  // load json asset
+  Future<String> _loadAQuestionAsset() async {
+    return await rootBundle.loadString('assets/questions.json');
+  }
+
+  Future<List> _parseJson() async {
+    String jsonString = await _loadAQuestionAsset();
+    final jsonResponse = jsonDecode(jsonString);
+    setState(() {
+      _questions = jsonResponse['questions'];
+    });
+    return jsonResponse['questions'];
+  }
 
   void _showNext(int score) {
     _totalScore = _totalScore + score;
@@ -78,38 +53,49 @@ class _QuizState extends State<Quiz> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Question ${_questionIndex + 1}'),
-      ),
-      body: _questionIndex < _questions.length
-          ? Column(
-              children: [
-                Question(
-                  _questions[_questionIndex]['questionText'],
-                ),
-                ...(_questions[_questionIndex]['answers']
-                        as List<Map<String, Object>>)
-                    .map((answer) {
-                  return Answer(
-                      () => _showNext(answer['score']), answer['text']);
-                }).toList(),
-                pressed
-                    ? RaisedButton(
-                        onPressed: _answerQuestion,
-                        textColor: Colors.white,
-                        color: Colors.blue,
-                        child: Text(
-                          _questionIndex == _questions.length - 1
-                              ? "End"
-                              : "Next",
-                          style: TextStyle(fontSize: 20.0, color: Colors.white),
+        appBar: AppBar(
+          title: Text('Question ${_questionIndex + 1}'),
+        ),
+        body: Column(
+          children: [
+            FutureBuilder<List>(
+                future: _parseJson(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: [
+                        Question(
+                          _questions[_questionIndex]['questionText'],
                         ),
-                        padding: EdgeInsets.all(10.0),
-                      )
-                    : SizedBox(),
-              ],
-            )
-          : SizedBox(),
-    );
+                        ...(_questions[_questionIndex]['answers'])
+                            .map((answer) {
+                          return Answer(
+                              () => _showNext(answer['score']), answer['text']);
+                        }).toList(),
+                        pressed
+                            ? RaisedButton(
+                                onPressed: _answerQuestion,
+                                textColor: Colors.white,
+                                color: Colors.blue,
+                                child: Text(
+                                  _questionIndex == _questions.length - 1
+                                      ? "End"
+                                      : "Next",
+                                  style: TextStyle(
+                                      fontSize: 20.0, color: Colors.white),
+                                ),
+                                padding: EdgeInsets.all(10.0),
+                              )
+                            : SizedBox(),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                }),
+          ],
+        ));
   }
 }

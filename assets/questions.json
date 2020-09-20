@@ -1,0 +1,88 @@
+{
+    "questions": [
+        {
+            "questionText": "Far-right protestors tried to storm the Parliament building in which country?",
+            "answers": [
+                {
+                    "text": "Australia",
+                    "score": 0
+                },
+                {
+                    "text": "Britain",
+                    "score": 0
+                },
+                {
+                    "text": "France",
+                    "score": 0
+                },
+                {
+                    "text": "Germany",
+                    "score": 1
+                }
+            ]
+        },
+        {
+            "questionText": "Why did Shinzo Abe, prime minister of Japan, resign from office?",
+            "answers": [
+                {
+                    "text": "An extramarital affair",
+                    "score": 0
+                },
+                {
+                    "text": "Fraud",
+                    "score": 0
+                },
+                {
+                    "text": "Illness",
+                    "score": 1
+                },
+                {
+                    "text": "Protests",
+                    "score": 0
+                }
+            ]
+        },
+        {
+            "questionText": "What did two commercial jet pilots reported seeing in the busy airspace near Los Angeles International Airport?",
+            "answers": [
+                {
+                    "text": "An attack drone",
+                    "score": 0
+                },
+                {
+                    "text": "A man with a jetpack",
+                    "score": 1
+                },
+                {
+                    "text": "A girl attached to a kite",
+                    "score": 0
+                },
+                {
+                    "text": "A U.F.O.",
+                    "score": 0
+                }
+            ]
+        },
+        {
+            "questionText": "After more than seven decades of absence, jaguars are being reintroduced into the wetlands of which country?",
+            "answers": [
+                {
+                    "text": "Argentina",
+                    "score": 1
+                },
+                {
+                    "text": "Belize",
+                    "score": 0
+                },
+                {
+                    "text": "Colombia",
+                    "score": 0
+                },
+                {
+                    "text": "Mexico",
+                    "score": 0
+                }
+            ]
+        }
+    ]
+}

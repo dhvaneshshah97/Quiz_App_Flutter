@@ -17,7 +17,6 @@ class _HomePageState extends State<HomePage> {
     getLname();
     getNname();
     getAge();
-    availability();
     score.readScore().then((int value) {
       setState(() {
         _score = value;
@@ -25,22 +24,14 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  bool _fname;
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
   final nicknameController = TextEditingController();
   final ageController = TextEditingController();
   int _score = 0;
+  bool _submit = false;
 
   final _formKey = GlobalKey<FormState>();
-
-  availability() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool fNameInSF = prefs.containsKey('fname');
-    setState(() {
-      _fname = fNameInSF;
-    });
-  }
 
   getFname() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -75,6 +66,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   addUserDetailstoSF() async {
+    this._submit = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('fname', firstnameController.text);
     prefs.setString('lname', lastnameController.text);
@@ -204,7 +196,11 @@ class _HomePageState extends State<HomePage> {
                           padding: EdgeInsets.all(10.0),
                         ),
                         RaisedButton(
-                          onPressed: () => _navigateAndDisplayScore(context),
+                          onPressed: () {
+                            if (this._submit) {
+                              _navigateAndDisplayScore(context);
+                            }
+                          },
                           textColor: Colors.white,
                           color: Colors.blue,
                           child: Text(
@@ -222,15 +218,13 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 80.0,
               ),
-              _fname
-                  ? Text(
-                      'Your score is: $_score',
-                      style: TextStyle(
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2.0),
-                    )
-                  : SizedBox(),
+              Text(
+                'Your score is: $_score',
+                style: TextStyle(
+                    fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2.0),
+              ),
             ],
           ),
         ),
