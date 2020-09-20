@@ -17,6 +17,7 @@ class _HomePageState extends State<HomePage> {
     getLname();
     getNname();
     getAge();
+    shouldTakeQuiz();
     score.availability().then((bool val) {
       setState(() {
         _scoreInFile = val;
@@ -35,7 +36,13 @@ class _HomePageState extends State<HomePage> {
   final ageController = TextEditingController();
   int _score = 0;
   bool _scoreInFile = false;
-  bool _submit = false;
+  bool _takeQuiz = false;
+
+  shouldTakeQuiz() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool present = prefs.containsKey('fname');
+    this._takeQuiz = present;
+  }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -72,7 +79,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   addUserDetailstoSF() async {
-    this._submit = true;
+    this._takeQuiz = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('fname', firstnameController.text);
     prefs.setString('lname', lastnameController.text);
@@ -188,36 +195,69 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        RaisedButton(
-                          onPressed: () {
-                            if (_formKey.currentState.validate()) {
-                              addUserDetailstoSF();
-                            }
+                        Builder(
+                          builder: (BuildContext context) {
+                            return RaisedButton(
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  addUserDetailstoSF();
+                                  Scaffold.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                      'Your details are saved',
+                                      style: TextStyle(
+                                          fontSize: 20.0,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 1),
+                                    ),
+                                    backgroundColor: Colors.blue,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: Duration(seconds: 4),
+                                  ));
+                                }
+                              },
+                              textColor: Colors.white,
+                              color: Colors.blue,
+                              child: Text(
+                                "Submit",
+                                style: TextStyle(
+                                    fontSize: 20.0, color: Colors.white),
+                              ),
+                              padding: EdgeInsets.all(10.0),
+                            );
                           },
-                          textColor: Colors.white,
-                          color: Colors.blue,
-                          child: Text(
-                            "Submit",
-                            style:
-                                TextStyle(fontSize: 20.0, color: Colors.white),
-                          ),
-                          padding: EdgeInsets.all(10.0),
                         ),
-                        RaisedButton(
-                          onPressed: () {
-                            if (this._submit) {
-                              _navigateAndDisplayScore(context);
-                            }
-                          },
-                          textColor: Colors.white,
-                          color: Colors.blue,
-                          child: Text(
-                            "Take Quiz",
-                            style:
-                                TextStyle(fontSize: 20.0, color: Colors.white),
-                          ),
-                          padding: EdgeInsets.all(10.0),
-                        ),
+                        Builder(builder: (BuildContext context) {
+                          return RaisedButton(
+                            onPressed: () {
+                              if (this._takeQuiz) {
+                                _navigateAndDisplayScore(context);
+                              } else {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                    'Please submit your details first!',
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        letterSpacing: 1),
+                                  ),
+                                  backgroundColor: Colors.blue,
+                                  behavior: SnackBarBehavior.floating,
+                                  duration: Duration(seconds: 3),
+                                ));
+                              }
+                            },
+                            textColor: Colors.white,
+                            color: Colors.blue,
+                            child: Text(
+                              "Take Quiz",
+                              style: TextStyle(
+                                  fontSize: 20.0, color: Colors.white),
+                            ),
+                            padding: EdgeInsets.all(10.0),
+                          );
+                        }),
                       ],
                     ),
                   ],
