@@ -1,4 +1,3 @@
-import 'package:CoolQuiz/answer.dart';
 import 'package:CoolQuiz/question.dart';
 import 'package:flutter/material.dart';
 // import 'package:CoolQuiz/questions_model.dart';
@@ -16,6 +15,8 @@ class _QuizState extends State<Quiz> {
   bool pressed = false;
   var _questionIndex = 0;
   var _totalScore = 0;
+  var _currScore = 0;
+  String _character;
 
   // load json asset
   Future<String> _loadAQuestionAsset() async {
@@ -31,32 +32,19 @@ class _QuizState extends State<Quiz> {
     return jsonResponse['questions'];
   }
 
-  void _showNext(int score) {
-    _totalScore = _totalScore + score;
-    setState(() {
-      pressed = true;
-    });
-  }
-
   void _answerQuestion() {
     if (_questionIndex >= _questions.length - 1) {
       print('hello');
       Navigator.pop(context, _totalScore > 0 ? _totalScore : 0);
       return;
     }
+    _totalScore = _totalScore + _currScore;
     _questionIndex = _questionIndex + 1;
     setState(() {
       pressed = false;
     });
     print(_questionIndex);
   }
-
-  // Future<bool> _onBackPressed() {
-  //   if (this._questionIndex == 0) {
-  //     Navigator.pop(context, _totalScore > 0 ? _totalScore : 0);
-  //   }
-  //   this._questionIndex = this._questionIndex - 1;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +74,20 @@ class _QuizState extends State<Quiz> {
                           ),
                           ...(_questions[_questionIndex]['answers'])
                               .map((answer) {
-                            return Answer(() => _showNext(answer['score']),
-                                answer['text']);
+                            return ListTile(
+                                title: Text(answer['text']),
+                                leading: Radio(
+                                  value: answer['text'],
+                                  groupValue: _character,
+                                  onChanged: (dynamic text) {
+                                    setState(() {
+                                      text = answer['text'];
+                                      _character = text;
+                                      pressed = true;
+                                      _currScore = answer['score'];
+                                    });
+                                  },
+                                ));
                           }).toList(),
                           pressed
                               ? RaisedButton(
