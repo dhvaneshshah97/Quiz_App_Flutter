@@ -11,16 +11,30 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
+  @override
+  void initState() {
+    _populateArray();
+    super.initState();
+  }
+
   var _questions = [];
   bool pressed = false;
   var _questionIndex = 0;
   var _totalScore = 0;
-  var _currScore = 0;
+  var _currScore;
   String _character;
 
   // load json asset
   Future<String> _loadAQuestionAsset() async {
     return await rootBundle.loadString('assets/questions.json');
+  }
+
+  Future<void> _populateArray() async {
+    String jsonString = await _loadAQuestionAsset();
+    final jsonResponse = jsonDecode(jsonString);
+    setState(() {
+      _currScore = List.filled(jsonResponse['questions'].length, 0);
+    });
   }
 
   Future<List> _parseJson() async {
@@ -33,17 +47,15 @@ class _QuizState extends State<Quiz> {
   }
 
   void _answerQuestion() {
+    _totalScore = _totalScore + _currScore[_questionIndex];
     if (_questionIndex >= _questions.length - 1) {
-      print('hello');
       Navigator.pop(context, _totalScore > 0 ? _totalScore : 0);
       return;
     }
-    _totalScore = _totalScore + _currScore;
     _questionIndex = _questionIndex + 1;
     setState(() {
       pressed = false;
     });
-    print(_questionIndex);
   }
 
   @override
@@ -54,6 +66,9 @@ class _QuizState extends State<Quiz> {
           return true;
         } else {
           _questionIndex = _questionIndex - 1;
+          if (_totalScore != 0 && _currScore[_questionIndex] == 1) {
+            _totalScore = _totalScore - 1;
+          }
           return false;
         }
       },
@@ -84,7 +99,12 @@ class _QuizState extends State<Quiz> {
                                       text = answer['text'];
                                       _character = text;
                                       pressed = true;
-                                      _currScore = answer['score'];
+                                      _currScore[_questionIndex] =
+                                          answer['score'];
+                                      print(_currScore[_questionIndex]);
+                                      print(answer['score']);
+                                      print(_currScore);
+                                      print(_character);
                                     });
                                   },
                                 ));
