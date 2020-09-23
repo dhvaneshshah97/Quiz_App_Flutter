@@ -110,12 +110,24 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Profile"),
+        title: RichText(
+          text: TextSpan(
+            children: [
+              WidgetSpan(
+                child: Icon(Icons.account_box, size: 22),
+              ),
+              TextSpan(
+                  text: "  My Profile",
+                  style:
+                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+            ],
+          ),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+          padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 15.0),
           child: Column(
             children: [
               Form(
@@ -130,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                           labelText: 'First Name',
                           labelStyle: TextStyle(
                             letterSpacing: 2.0,
-                            color: Colors.orange,
+                            color: Colors.orange[800],
                           )),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.text,
@@ -146,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                           labelText: 'Last Name',
                           labelStyle: TextStyle(
                             letterSpacing: 2.0,
-                            color: Colors.orange,
+                            color: Colors.orange[800],
                           )),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.text,
@@ -162,13 +174,10 @@ class _HomePageState extends State<HomePage> {
                           labelText: 'Nick Name',
                           labelStyle: TextStyle(
                             letterSpacing: 2.0,
-                            color: Colors.orange,
+                            color: Colors.orange[800],
                           )),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.text,
-                      style: TextStyle(
-                        letterSpacing: 2.0,
-                      ),
                     ),
                     SizedBox(
                       height: 5.0,
@@ -181,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                           labelText: 'Age',
                           labelStyle: TextStyle(
                             letterSpacing: 2.0,
-                            color: Colors.orange,
+                            color: Colors.orange[800],
                           )),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.number,

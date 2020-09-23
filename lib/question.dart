@@ -9,8 +9,8 @@ class Question extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        questionText,
-        style: TextStyle(fontSize: 28.0),
+        'Q. ' + questionText,
+        style: TextStyle(fontSize: 23.0),
         textAlign: TextAlign.center,
       ),
     );
