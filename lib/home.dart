@@ -13,10 +13,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getFname();
-    getLname();
-    getNname();
-    getAge();
+    _getFname();
+    _getLname();
+    _getNname();
+    _getAge();
     shouldTakeQuiz();
     score.availability().then((bool val) {
       setState(() {
@@ -30,10 +30,10 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  final firstnameController = TextEditingController();
-  final lastnameController = TextEditingController();
-  final nicknameController = TextEditingController();
-  final ageController = TextEditingController();
+  final _firstnameController = TextEditingController();
+  final _lastnameController = TextEditingController();
+  final _nicknameController = TextEditingController();
+  final _ageController = TextEditingController();
   int _score = 0;
   bool _scoreInFile = false;
   bool _takeQuiz = false;
@@ -46,45 +46,45 @@ class _HomePageState extends State<HomePage> {
 
   final _formKey = GlobalKey<FormState>();
 
-  getFname() async {
+  _getFname() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String fname = prefs.getString('fname') ?? '';
     setState(() {
-      firstnameController.text = fname;
+      _firstnameController.text = fname;
     });
   }
 
-  getLname() async {
+  _getLname() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String lname = prefs.getString('lname') ?? '';
     setState(() {
-      lastnameController.text = lname;
+      _lastnameController.text = lname;
     });
   }
 
-  getNname() async {
+  _getNname() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String nname = prefs.getString('nname') ?? '';
     setState(() {
-      nicknameController.text = nname;
+      _nicknameController.text = nname;
     });
   }
 
-  getAge() async {
+  _getAge() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String age = prefs.getString('age') ?? '';
     setState(() {
-      ageController.text = age;
+      _ageController.text = age;
     });
   }
 
-  addUserDetailstoSF() async {
+  _addUserDetailstoSF() async {
     this._takeQuiz = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('fname', firstnameController.text);
-    prefs.setString('lname', lastnameController.text);
-    prefs.setString('nname', nicknameController.text);
-    prefs.setString('age', ageController.text);
+    prefs.setString('fname', _firstnameController.text);
+    prefs.setString('lname', _lastnameController.text);
+    prefs.setString('nname', _nicknameController.text);
+    prefs.setString('age', _ageController.text);
   }
 
   _navigateAndDisplayScore(BuildContext context) async {
@@ -117,13 +117,14 @@ class _HomePageState extends State<HomePage> {
                 child: Icon(Icons.account_box, size: 22),
               ),
               TextSpan(
-                  text: "  My Profile",
+                  text: " My Profile",
                   style:
                       TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
         centerTitle: true,
+        backgroundColor: Colors.indigo[400],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -137,12 +138,12 @@ class _HomePageState extends State<HomePage> {
                     TextFormField(
                       validator: (value) =>
                           value.isEmpty ? 'Value can\'t be empty' : null,
-                      controller: firstnameController,
+                      controller: _firstnameController,
                       decoration: InputDecoration(
                           labelText: 'First Name',
                           labelStyle: TextStyle(
                             letterSpacing: 2.0,
-                            color: Colors.orange[800],
+                            color: Colors.indigo[400],
                           )),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.text,
@@ -153,12 +154,12 @@ class _HomePageState extends State<HomePage> {
                     TextFormField(
                       validator: (value) =>
                           value.isEmpty ? 'Value can\'t be empty' : null,
-                      controller: lastnameController,
+                      controller: _lastnameController,
                       decoration: InputDecoration(
                           labelText: 'Last Name',
                           labelStyle: TextStyle(
                             letterSpacing: 2.0,
-                            color: Colors.orange[800],
+                            color: Colors.indigo[400],
                           )),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.text,
@@ -169,12 +170,12 @@ class _HomePageState extends State<HomePage> {
                     TextFormField(
                       validator: (value) =>
                           value.isEmpty ? 'Value can\'t be empty' : null,
-                      controller: nicknameController,
+                      controller: _nicknameController,
                       decoration: InputDecoration(
                           labelText: 'Nick Name',
                           labelStyle: TextStyle(
                             letterSpacing: 2.0,
-                            color: Colors.orange[800],
+                            color: Colors.indigo[400],
                           )),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.text,
@@ -185,12 +186,12 @@ class _HomePageState extends State<HomePage> {
                     TextFormField(
                       validator: (value) =>
                           value.isEmpty ? 'Value can\'t be empty' : null,
-                      controller: ageController,
+                      controller: _ageController,
                       decoration: InputDecoration(
                           labelText: 'Age',
                           labelStyle: TextStyle(
                             letterSpacing: 2.0,
-                            color: Colors.orange[800],
+                            color: Colors.indigo[400],
                           )),
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.number,
@@ -209,7 +210,7 @@ class _HomePageState extends State<HomePage> {
                             return RaisedButton(
                               onPressed: () {
                                 if (_formKey.currentState.validate()) {
-                                  addUserDetailstoSF();
+                                  _addUserDetailstoSF();
                                   Scaffold.of(context).showSnackBar(SnackBar(
                                     content: Text(
                                       'Your details are saved',
@@ -219,14 +220,14 @@ class _HomePageState extends State<HomePage> {
                                           fontWeight: FontWeight.bold,
                                           letterSpacing: 1),
                                     ),
-                                    backgroundColor: Colors.blue,
+                                    backgroundColor: Colors.indigo[400],
                                     behavior: SnackBarBehavior.floating,
                                     duration: Duration(seconds: 4),
                                   ));
                                 }
                               },
                               textColor: Colors.white,
-                              color: Colors.blue,
+                              color: Colors.indigo[400],
                               child: Text(
                                 "Submit",
                                 style: TextStyle(
@@ -251,14 +252,14 @@ class _HomePageState extends State<HomePage> {
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 1),
                                   ),
-                                  backgroundColor: Colors.blue,
+                                  backgroundColor: Colors.indigo[400],
                                   behavior: SnackBarBehavior.floating,
                                   duration: Duration(seconds: 3),
                                 ));
                               }
                             },
                             textColor: Colors.white,
-                            color: Colors.blue,
+                            color: Colors.indigo[400],
                             child: Text(
                               "Take Quiz",
                               style: TextStyle(

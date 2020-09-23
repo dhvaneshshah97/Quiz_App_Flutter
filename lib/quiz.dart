@@ -18,12 +18,12 @@ class _QuizState extends State<Quiz> {
     super.initState();
   }
 
-  var _questions = [];
+  List _questions = [];
   bool pressed = false;
-  var _questionIndex = 0;
-  var _totalScore = 0;
-  var _currScore;
-  var _currAns;
+  int _questionIndex = 0;
+  int _totalScore = 0;
+  List _currScore;
+  List _currAns;
   String _character;
 
   // load json asset
@@ -91,6 +91,7 @@ class _QuizState extends State<Quiz> {
       child: Scaffold(
           appBar: AppBar(
             title: Text('Question ${_questionIndex + 1}'),
+            backgroundColor: Colors.indigo[400],
           ),
           body: SingleChildScrollView(
             child: Padding(
@@ -122,33 +123,29 @@ class _QuizState extends State<Quiz> {
                                               answer['score'];
                                           _currAns[_questionIndex] =
                                               answer['text'];
-                                          print(_currScore[_questionIndex]);
-                                          print(answer['score']);
-                                          print(_currScore);
-                                          print(_character);
+                                          // print(_currScore[_questionIndex]);
+                                          // print(answer['score']);
+                                          // print(_currScore);
+                                          // print(_character);
                                         });
                                       },
                                     ));
                               }).toList(),
                               pressed
-                                  ? Padding(
-                                      padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                      child: RaisedButton(
-                                        onPressed: _answerQuestion,
-                                        textColor: Colors.white,
-                                        color: Colors.blue,
-                                        shape: StadiumBorder(),
-                                        child: Text(
-                                          _questionIndex ==
-                                                  _questions.length - 1
-                                              ? "End & Submit"
-                                              : "Next",
-                                          style: TextStyle(
-                                              fontSize: 20.0,
-                                              color: Colors.white),
-                                        ),
-                                        padding: EdgeInsets.all(10.0),
+                                  ? RaisedButton(
+                                      onPressed: _answerQuestion,
+                                      textColor: Colors.white,
+                                      color: Colors.indigo[400],
+                                      shape: StadiumBorder(),
+                                      child: Text(
+                                        _questionIndex == _questions.length - 1
+                                            ? "End & Submit"
+                                            : "Next",
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            color: Colors.white),
                                       ),
+                                      padding: EdgeInsets.all(10.0),
                                     )
                                   : SizedBox(),
                             ],
