@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:CoolQuiz/home.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -22,13 +21,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.indigo[400],
       body: Center(
-        child: SpinKitFadingCube(
-          color: Colors.white,
-          size: 35.0,
-        ),
-      ),
+          child: Text(
+        'CoolQuiz',
+        style: TextStyle(
+            fontSize: 30.0, fontWeight: FontWeight.bold, color: Colors.white),
+      )),
     );
   }
 }
