@@ -1,12 +1,12 @@
 # CoolQuiz (Flutter - Dart)
 
-<table style='background-color:lightyellow'>
+<table>
 <tr>
 <td>
-<strong style='font-size:18px; color:indigo'>A simple yet elegant Quiz App developed with Flutter.</strong>
+<strong>A simple yet elegant Quiz App developed with Flutter.</strong>
 </td>
 </tr>
-</table><br><br>
+</table>
 
 ## Some of the Widgets and Plugins used
 
@@ -63,9 +63,11 @@
   <tr>
     <td>Show end on last question</td>
     <td>Redirect to Home Screen & show score</td>
+    <td>show score and details on restart app</td>
   </tr>
   <tr>
     <td valign="top"><img src="screenshots/end.jpg" width=270 height=480></td>
+    <td valign="top"><img src="screenshots/score.jpg" width=270 height=480></td>
     <td valign="top"><img src="screenshots/score.jpg" width=270 height=480></td>
   </tr>
  </table>
